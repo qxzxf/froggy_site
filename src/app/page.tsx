@@ -98,7 +98,7 @@ export default function Home() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
-                className="w-full max-w-md mx-auto px-4 mb-8 pointer-events-auto"
+                className="w-full max-w-md mx-auto px-4 mb-8 pointer-events-auto relative z-50"
               >
                 <div className="glass-panel">
                   <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -125,7 +125,7 @@ export default function Home() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
-                  className="w-full max-w-md mx-auto px-4 mb-8 pointer-events-auto"
+                  className="w-full max-w-md mx-auto px-4 mb-8 pointer-events-auto relative z-50"
                 >
                   <div className="glass-panel text-center">
                     <p className="game-score">Поймано мошек: {gameScore}</p>
