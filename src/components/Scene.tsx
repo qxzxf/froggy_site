@@ -22,6 +22,7 @@ import { Suspense, useRef, useEffect } from 'react'
 import { Frog3D } from './Frog3D'
 import * as THREE from 'three'
 import { useSpring, animated } from '@react-spring/three'
+import { Vector3, Vector2 } from 'three'
 
 function WaterSurface() {
   const waterRef = useRef<THREE.Mesh>(null)
@@ -32,15 +33,21 @@ function WaterSurface() {
     }
   }, [])
 
-  const { position } = useSpring({
-    from: { position: [0, -1, 0] },
-    to: { position: [0, -0.9, 0] },
+  const springs = useSpring({
+    from: { y: -1 },
+    to: { y: -0.9 },
     config: { mass: 1, tension: 280, friction: 120 },
     loop: true
   })
 
   return (
-    <animated.mesh ref={waterRef} position={position} receiveShadow>
+    <animated.mesh 
+      ref={waterRef} 
+      position-y={springs.y} 
+      position-x={0}
+      position-z={0}
+      receiveShadow
+    >
       <planeGeometry args={[100, 100, 128, 128]} />
       <meshPhysicalMaterial 
         color="#0c4a6e"
@@ -64,15 +71,21 @@ function WaterSurface() {
 function Waterlily({ position }: { position: [number, number, number] }) {
   const lilyRef = useRef<THREE.Group>(null)
 
-  const { rotation } = useSpring({
-    from: { rotation: [0, 0, 0] },
-    to: { rotation: [0, Math.PI * 2, 0] },
+  const springs = useSpring({
+    from: { rotationY: 0 },
+    to: { rotationY: Math.PI * 2 },
     config: { duration: 20000 },
     loop: true
   })
 
   return (
-    <animated.group ref={lilyRef} position={position} rotation={rotation}>
+    <animated.group 
+      ref={lilyRef} 
+      position={position}
+      rotation-y={springs.rotationY}
+      rotation-x={0}
+      rotation-z={0}
+    >
       {/* Лист кувшинки */}
       <mesh rotation={[-Math.PI / 2, 0, Math.random() * Math.PI * 2]} position={[0, 0, 0]}>
         <circleGeometry args={[1, 32]} />
@@ -170,7 +183,9 @@ export default function Scene() {
             luminanceSmoothing={0.9}
           />
           <ChromaticAberration
-            offset={[0.001, 0.001]}
+            offset={new Vector2(0.001, 0.001)}
+            radialModulation={false}
+            modulationOffset={1}
           />
           <Vignette
             darkness={0.4}
