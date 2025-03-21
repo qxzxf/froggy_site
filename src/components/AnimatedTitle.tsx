@@ -45,13 +45,13 @@ export function AnimatedTitle({ onAnimationComplete }: AnimatedTitleProps) {
 
   return (
     <motion.div
-      className="absolute top-4 left-1/2 transform -translate-x-1/2 z-30"
+      className="flex justify-center items-center z-30"
       initial="initial"
       animate="animate"
       variants={containerAnimation}
       onAnimationComplete={() => onAnimationComplete?.()}
     >
-      <div className="flex justify-center items-center">
+      <div className="flex space-x-1">
         {letters.map((letter, index) => (
           <motion.div
             key={index}
@@ -64,7 +64,7 @@ export function AnimatedTitle({ onAnimationComplete }: AnimatedTitleProps) {
             }}
           >
             <span 
-              className="font-bold text-5xl sm:text-6xl md:text-7xl"
+              className="font-bold text-5xl sm:text-6xl md:text-7xl inline-block"
               style={{
                 background: `linear-gradient(135deg, 
                   #4ade80 0%,

@@ -163,7 +163,17 @@ function Environment3D() {
 
 export default function Scene() {
   return (
-    <Canvas shadows>
+    <Canvas 
+      shadows
+      className="w-full h-full"
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%'
+      }}
+    >
       <PerspectiveCamera makeDefault position={[0, 2, 8]} />
       <OrbitControls 
         enableZoom={false}

@@ -46,13 +46,16 @@ export default function Home() {
 
   const handleGameToggle = () => {
     setShowGame(!showGame)
+    if (!showGame) {
+      setGameScore(0)
+    }
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between relative overflow-hidden">
-      <div className="w-full h-screen relative">
+    <main className="min-h-screen w-full relative overflow-hidden">
+      <div className="absolute inset-0">
         <Suspense fallback={
-          <div className="w-full h-full flex items-center justify-center">
+          <div className="w-full h-screen flex items-center justify-center">
             <div className="glass-panel">
               <p className="text-xl">Загрузка волшебного пруда...</p>
             </div>
@@ -60,24 +63,28 @@ export default function Home() {
         }>
           <Scene />
         </Suspense>
+      </div>
 
-        <AnimatePresence>
-          {isLoading && (
-            <LoadingSpinner onLoadingComplete={handleLoadingComplete} />
-          )}
-        </AnimatePresence>
+      <AnimatePresence>
+        {isLoading && (
+          <LoadingSpinner onLoadingComplete={handleLoadingComplete} />
+        )}
+      </AnimatePresence>
 
-        <AnimatedTitle />
+      <div className="absolute inset-0 flex flex-col items-center pt-20 pointer-events-none">
+        <div className="mb-16">
+          <AnimatedTitle />
+        </div>
 
         <AnimatePresence>
           {showContent && (
             <motion.div
-              className="absolute top-[25vh] left-1/2 transform -translate-x-1/2 text-center"
+              className="w-full max-w-md mx-auto px-4 mb-8 pointer-events-auto"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <p className="text-lg sm:text-xl text-white/80 font-light tracking-wide glass-panel">
+              <p className="text-lg sm:text-xl text-white/80 font-light tracking-wide glass-panel text-center">
                 Добро пожаловать в волшебный пруд
               </p>
             </motion.div>
@@ -91,22 +98,26 @@ export default function Home() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
-                className="absolute top-[35vh] left-1/2 transform -translate-x-1/2 glass-panel flex gap-4 flex-wrap justify-center z-30"
+                className="w-full max-w-md mx-auto px-4 mb-8 pointer-events-auto"
               >
-                <button
-                  onClick={startRain}
-                  disabled={isRaining}
-                  className="neon-button"
-                >
-                  Лягушачий дождь
-                </button>
+                <div className="glass-panel">
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <button
+                      onClick={startRain}
+                      disabled={isRaining}
+                      className="neon-button w-full sm:w-auto"
+                    >
+                      Лягушачий дождь
+                    </button>
 
-                <button
-                  onClick={handleGameToggle}
-                  className="neon-button"
-                >
-                  {showGame ? 'Закрыть игру' : 'Накорми лягушку'}
-                </button>
+                    <button
+                      onClick={handleGameToggle}
+                      className="neon-button w-full sm:w-auto"
+                    >
+                      {showGame ? 'Закрыть игру' : 'Накорми лягушку'}
+                    </button>
+                  </div>
+                </div>
               </motion.div>
 
               {showGame && (
@@ -114,9 +125,11 @@ export default function Home() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
-                  className="absolute top-[45vh] left-1/2 transform -translate-x-1/2 glass-panel"
+                  className="w-full max-w-md mx-auto px-4 mb-8 pointer-events-auto"
                 >
-                  <p className="game-score">Поймано мошек: {gameScore}</p>
+                  <div className="glass-panel text-center">
+                    <p className="game-score">Поймано мошек: {gameScore}</p>
+                  </div>
                 </motion.div>
               )}
 
@@ -124,27 +137,29 @@ export default function Home() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
-                className="absolute bottom-4 left-1/2 transform -translate-x-1/2 glass-panel"
+                className="w-full max-w-md mx-auto px-4 mt-auto pointer-events-auto"
               >
-                <p className="secret-hint">
-                  Нажмите Ctrl + Q для секрета 🐸
-                </p>
+                <div className="glass-panel text-center">
+                  <p className="secret-hint">
+                    Нажмите Ctrl + Q для секрета 🐸
+                  </p>
+                </div>
               </motion.div>
             </>
           )}
         </AnimatePresence>
-
-        <Bubbles />
-        <WaterRipples />
-        <FallingLeaves />
-        <RainEffect />
-        {showGame && (
-          <FeedingGame 
-            isActive={showGame} 
-            onScoreChange={setGameScore} 
-          />
-        )}
       </div>
+
+      <Bubbles />
+      <WaterRipples />
+      <FallingLeaves />
+      <RainEffect />
+      {showGame && (
+        <FeedingGame 
+          isActive={showGame} 
+          onScoreChange={setGameScore} 
+        />
+      )}
     </main>
   )
 }
